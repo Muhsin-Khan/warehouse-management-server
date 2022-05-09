@@ -41,7 +41,7 @@ const users = [
 ];
 
 app.get("/", (req, res) => {
-  res.send("okk broh it is working??...!");
+  res.send("okk broh it is... working??...!");
 });
 
 app.get("/users/:id", (req, res) => {
