@@ -28,11 +28,8 @@ async function run(){
           const cursor = productCollection.find(query)
           const products = await cursor.toArray();
           res.send(products);
-      })
+      });
       
-      // const result = await userCollection.insertOne(user);
-
-      // console.log(`User inserted with id: ${result.insertedId}`)
   }
   finally{
 
