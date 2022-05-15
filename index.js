@@ -1,47 +1,48 @@
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
+require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-// user:dbuser1
-// password:8nhcXqA2BgmOymay
 
 const uri =
-  "mongodb+srv://dbuser1:8nhcXqA2BgmOymay@cluster0.7yuth.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.7yuth.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
 
+
 async function run(){
   try{
       await client.connect();
-      const userCollection = client.db('foodExpress').collection('users');
-      const user = {name: 'Somebody', email: 'Somebody@gamil.com'};
-      const result = await userCollection.insertOne(user);
-      console.log(`User inserted with id: ${result.insertedId}`)
+      const productCollection = client.db('DBofTechBhandar').collection('TechBhandar');
+      
+      app.get('/product', async(req, res)=>{
+          const query = {};
+          const cursor = productCollection.find(query)
+          const products = await cursor.toArray();
+          res.send(products);
+      })
+      
+      // const result = await userCollection.insertOne(user);
+
+      // console.log(`User inserted with id: ${result.insertedId}`)
   }
   finally{
 
   }
 }
 run().catch(console.dir);
-const users = [
-  { id: 1, name: "karim", email: "omuktomuk@gmail.com", age: 24 },
-  { id: 2, name: "junayed", email: "omuktomuk@gmail.com", age: 24 },
-  { id: 3, name: "junayed", email: "omuktomuk@gmail.com", age: 24 },
-  { id: 4, name: "javed", email: "omuktomuk@gmail.com", age: 24 },
-  { id: 5, name: "junayed", email: "omuktomuk@gmail.com", age: 24 },
-  { id: 6, name: "junayed", email: "omuktomuk@gmail.com", age: 24 },
-];
+
 
 app.get("/", (req, res) => {
-  res.send("okk broh it is... working??...!");
+  res.send("broh is it...... working??...  yes it is.. ");
 });
 
 app.get("/users/:id", (req, res) => {
