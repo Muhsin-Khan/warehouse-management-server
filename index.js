@@ -42,7 +42,7 @@ run().catch(console.dir);
 
 
 app.get("/", (req, res) => {
-  res.send("broh is it.. working??...  yes it is.. ");
+  res.send("broh is it..... working??...  yes it is.. ");
 });
 
 app.get("/users/:id", (req, res) => {
