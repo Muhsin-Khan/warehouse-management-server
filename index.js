@@ -50,7 +50,36 @@ async function run() {
       const result = await productCollection.deleteOne(query);
       res.send(result);
     })
-  } finally {
+    // Updating product or item
+    app.put('/product/:id',async(req,res)=>{
+      const id=req.params.id;
+      const updateditem=req.body;
+      const query = {_id:ObjectId(id)};
+      const options = {upsert:true};
+      const newitem={
+        $set: {
+         quantity:updateditem.quaNtity
+        }
+      };
+      const update=await productCollection.updateOne(query,newitem,options);
+      res.send(update);
+    });
+    app.put('/product/:id',async(req,res)=>{
+      const id=req.params.id;
+      const updatedItem=req.body;
+      const query = {_id:ObjectId(id)};
+      const options = {upsert:true};
+      const newItem={
+        $set: {
+          newAddedQuantityNumber:updatedItem.newAddedQuantityNumber
+        }
+      };
+      const upDate=await productCollection.updateOne(query,newItem,options);
+      res.send(upDate);
+    });
+    
+  } 
+  finally {
   }
 }
 run().catch(console.dir);
@@ -59,23 +88,6 @@ app.get("/", (req, res) => {
   res.send("broh is it.... working??...  yes it is.. ");
 });
 
-app.get("/users/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const user = users.find((u) => u.id === id);
-  res.send(user);
-});
-
-app.post("/users", (req, res) => {
-  console.log("requ", req.body);
-  const user = req.body;
-  user.id = users.length + 1;
-  users.push(user);
-  res.send(user);
-});
-
-app.get("/users", (req, res) => {
-  res.send(users);
-});
 
 app.listen(port, () => {
   console.log("liten is working...", port);
