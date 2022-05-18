@@ -6,6 +6,7 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
@@ -36,7 +37,7 @@ async function run() {
       res.send(product);
     });
     
-    // Adding the product
+    //Post (Adding New product)
     app.post("/product", async (req, res) => {
       const newProduct = req.body;
       const result = await productCollection.insertOne(newProduct);
@@ -50,7 +51,7 @@ async function run() {
       const result = await productCollection.deleteOne(query);
       res.send(result);
     })
-    // Updating product or item
+    // Updating a product or item
     app.put('/product/:id',async(req,res)=>{
       const id=req.params.id;
       const updateditem=req.body;
@@ -64,25 +65,16 @@ async function run() {
       const update=await productCollection.updateOne(query,newitem,options);
       res.send(update);
     });
-    app.put('/product/:id',async(req,res)=>{
-      const id=req.params.id;
-      const updatedItem=req.body;
-      const query = {_id:ObjectId(id)};
-      const options = {upsert:true};
-      const newItem={
-        $set: {
-          newAddedQuantityNumber:updatedItem.newAddedQuantityNumber
-        }
-      };
-      const upDate=await productCollection.updateOne(query,newItem,options);
-      res.send(upDate);
-    });
+    
     
   } 
   finally {
   }
 }
 run().catch(console.dir);
+
+
+
 
 app.get("/", (req, res) => {
   res.send("broh is it.... working??...  yes it is.. ");
